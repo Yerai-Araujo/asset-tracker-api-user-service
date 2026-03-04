@@ -1,4 +1,4 @@
-package com.at.asset_tracker.portfolio.domain.exception;
+package com.at.asset_tracker.user.domain.exception;
 
 import java.util.Map;
 
@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.at.asset_tracker.market.domain.exception.MarketPriceProviderException;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -17,16 +15,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFound(ResourceNotFoundException ex) {
         return Map.of(
-                "error", ex.getMessage()
-        );
-    }
-
-    @ExceptionHandler(MarketPriceProviderException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleMarketPriceProvider(MarketPriceProviderException ex) {
-        return Map.of(
-                "error", ex.getMessage()
-        );
+                "error", ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

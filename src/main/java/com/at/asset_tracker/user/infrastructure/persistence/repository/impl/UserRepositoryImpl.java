@@ -4,8 +4,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.at.asset_tracker.portfolio.infrastructure.persistence.entity.PortfolioEntity;
-import com.at.asset_tracker.portfolio.infrastructure.persistence.repository.PortfolioJpaRepository;
 import com.at.asset_tracker.user.domain.model.User;
 import com.at.asset_tracker.user.domain.repository.UserRepository;
 import com.at.asset_tracker.user.infrastructure.persistence.entity.UserEntity;
@@ -15,11 +13,9 @@ import com.at.asset_tracker.user.infrastructure.persistence.repository.UserJpaRe
 public class UserRepositoryImpl implements UserRepository {
 
     private final UserJpaRepository jpaRepository;
-    private final PortfolioJpaRepository portfolioJpaRepository;
 
-    public UserRepositoryImpl(UserJpaRepository jpaRepository, PortfolioJpaRepository portfolioJpaRepository) {
+    public UserRepositoryImpl(UserJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
-        this.portfolioJpaRepository = portfolioJpaRepository;
     }
 
     @Override
@@ -53,8 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
         entity.setName(user.name());
 
         if (user.portfolioId() != null) {
-            PortfolioEntity ref = portfolioJpaRepository.getReferenceById(user.portfolioId());
-            entity.setPortfolio(ref);
+            entity.setPortfolioId(user.portfolioId());
         }
 
         return entity;
@@ -65,7 +60,7 @@ public class UserRepositoryImpl implements UserRepository {
                 entity.getId(),
                 entity.getEmail(),
                 entity.getName(),
-                entity.getPortfolio() != null ? entity.getPortfolio().getId() : null
+                entity.getPortfolioId() != null ? entity.getPortfolioId() : null
         );
     }
 }

@@ -1,7 +1,5 @@
 package com.at.asset_tracker.user.infrastructure.persistence.entity;
 
-import com.at.asset_tracker.portfolio.infrastructure.persistence.entity.PortfolioEntity;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,8 +27,8 @@ public class UserEntity {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)
-    private PortfolioEntity portfolio;
+    @Column(name = "portfolio_id", nullable = true)
+    private Long portfolioId;
 
 }
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.at.asset_tracker.user.application.dto.request.CreateUserRequest;
 import com.at.asset_tracker.user.application.dto.response.UserResponse;
 import com.at.asset_tracker.user.application.service.UserApplicationService;
+import com.at.asset_tracker.user.domain.exception.ResourceNotFoundException;
 import com.at.asset_tracker.user.domain.model.User;
 
 @RestController
@@ -30,12 +31,11 @@ public class UserController {
 
         User user = userService.create(
                 request.name(),
-                request.email()
-        );
+                request.email());
 
         return ResponseEntity
-        .created(URI.create("/api/users/" + user.id()))
-        .body(toResponse(user));
+                .created(URI.create("/api/users/" + user.id()))
+                .body(toResponse(user));
     }
 
     @GetMapping("/{id}")
@@ -54,14 +54,17 @@ public class UserController {
         return ResponseEntity.ok(toResponse(user));
     }
 
+    @GetMapping("/validate/user/{id}")
+    public ResponseEntity<UserResponse> validateUser(@PathVariable Long id) {
+
+        return ResponseEntity.ok(toResponse(userService.findById(id)));
+    }
+
     private UserResponse toResponse(User user) {
         return new UserResponse(
                 user.id(),
                 user.name(),
                 user.email(),
-                user.portfolioId()
-        );
+                user.portfolioId());
     }
 }
-
-
