@@ -15,6 +15,7 @@ import com.at.asset_tracker.user.application.dto.response.UserResponse;
 import com.at.asset_tracker.user.application.service.UserApplicationService;
 import com.at.asset_tracker.user.domain.exception.ResourceNotFoundException;
 import com.at.asset_tracker.user.domain.model.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -27,11 +28,11 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> create(@RequestBody CreateUserRequest request) throws JsonProcessingException {
 
         User user = userService.create(
-                request.name(),
-                request.email());
+                request.email(),
+                request.name());
 
         return ResponseEntity
                 .created(URI.create("/api/users/" + user.id()))
