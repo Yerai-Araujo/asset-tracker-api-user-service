@@ -3,7 +3,12 @@ package com.at.asset_tracker.user.infrastructure.scheduling;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class OutboxCleanupJob {
 
@@ -13,12 +18,26 @@ public class OutboxCleanupJob {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Scheduled(cron = "0 0 3 * * *") // cada día a las 3am
+    // Ejecutar cada día a las 3:00 AM
+    @Scheduled(cron = "0 0 3 * * *")
     public void cleanup() {
-
-        jdbcTemplate.update("""
-            DELETE FROM outbox_events
-            WHERE created_at < now() - interval '7 days'
-        """);
+        deleteOldPublishedEvents();
     }
+
+    // Ejecutar al arrancar la aplicación
+    @PostConstruct
+    public void cleanupOnStartup() {
+        deleteOldPublishedEvents();
+    }
+
+    @Transactional
+    private void deleteOldPublishedEvents() {
+        int deletedEvents = jdbcTemplate.update("""
+                    DELETE FROM outbox_events
+                    WHERE createdat < now() - interval '7 days'
+                """);
+
+        log.info("Outbox cleanup: {} events deleted", deletedEvents);
+    }
+
 }

@@ -12,4 +12,9 @@ public interface UserJpaRepository
     Optional<UserEntity> findByEmail(String email);
 
     boolean existsByEmail(String email);
+
+    boolean existsById(Long id);
+
+    void deleteById(Long id);
+
 }

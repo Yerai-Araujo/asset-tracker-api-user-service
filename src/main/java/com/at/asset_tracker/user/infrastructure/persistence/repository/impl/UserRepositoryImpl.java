@@ -42,6 +42,16 @@ public class UserRepositoryImpl implements UserRepository {
         return jpaRepository.existsByEmail(email);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        return jpaRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jpaRepository.deleteById(id);
+    }
+
     private UserEntity toEntity(User user) {
         UserEntity entity = new UserEntity();
         entity.setId(user.id());

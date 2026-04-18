@@ -1,5 +1,8 @@
 package com.at.asset_tracker.user.domain.model;
 
+import lombok.Setter;
+
+@Setter
 public class User {
     
     private Long id;
@@ -30,5 +33,9 @@ public class User {
     public String email() { return email; }
     public String name() { return name; }
     public Long portfolioId() { return portfolioId; }
+
+    public static User create(String email, String name) {
+        return new User(null, email, name, null);   
+    }
 
 }

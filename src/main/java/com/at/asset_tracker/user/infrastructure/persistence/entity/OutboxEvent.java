@@ -37,8 +37,6 @@ public class OutboxEvent {
     @Column(name = "createdat", nullable = false)
     private Instant createdAt;
 
-    private boolean published;
-
     public OutboxEvent() {
     }
 
@@ -48,8 +46,6 @@ public class OutboxEvent {
         this.aggregateType = aggregateType;
         this.type = type;
         this.payload = payload;
-        this.createdAt = Instant.now();
-        this.published = false;
     }
 
     @PrePersist
@@ -57,6 +53,18 @@ public class OutboxEvent {
         if (this.createdAt == null) {
             this.createdAt = Instant.now();
         }
+    }
+
+    public static OutboxEvent userCreated(Long aggregateId, JsonNode payload) {
+        return new OutboxEvent(aggregateId.toString(), "User", "UserCreated", payload);
+    }
+
+    public static OutboxEvent userUpdated(Long aggregateId, JsonNode payload) {
+        return new OutboxEvent(aggregateId.toString(), "User", "UserUpdated", payload);
+    }
+
+    public static OutboxEvent userDeleted(Long aggregateId, JsonNode payload) {
+        return new OutboxEvent(aggregateId.toString(), "User", "UserDeleted", payload);
     }
 
     public UUID getId() {
@@ -107,11 +115,4 @@ public class OutboxEvent {
         this.createdAt = createdAt;
     }
 
-    public boolean isPublished() {
-        return published;
-    }
-
-    public void setPublished(boolean published) {
-        this.published = published;
-    }
 }
