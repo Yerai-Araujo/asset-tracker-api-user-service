@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -73,8 +74,8 @@ public class UserController {
     @Operation(summary = "Find a user by email")
     @ApiResponse(responseCode = "200", description = "User found")
     @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
-    @GetMapping("/email/{email}")
-    public ResponseEntity<UserResponse> findByEmail(@PathVariable String email) {
+    @GetMapping
+    public ResponseEntity<UserResponse> findUser(@RequestParam String email) {
 
         User user = userService.findByEmail(email);
 

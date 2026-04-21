@@ -43,7 +43,7 @@ public class UserApplicationService {
 
         OutboxEvent outboxEvent = OutboxEvent.userCreated(savedUser.id(), payload);
         outboxRepository.save(outboxEvent);
-
+        
         return savedUser;
     }
 
